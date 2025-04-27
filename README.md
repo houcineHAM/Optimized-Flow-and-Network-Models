@@ -1,158 +1,97 @@
-# Optimized Flow and Network Models
+# Optimization Models in OPL
 
-This repository contains a collection of OPL (Optimization Programming Language) models designed for solving various optimization problems, primarily related to network flows and transportation problems. These models are implemented using IBM ILOG CPLEX Optimization Studio.
+This repository contains various optimization models written in **OPL (Optimization Programming Language)**. Each code solves a different type of optimization problem. The models are implemented using **IBM ILOG CPLEX Optimization Studio**, which is a tool for solving optimization problems.
 
-## Models Overview
+## List of Codes
 
-Each model presented here is designed to solve a specific optimization problem, and the explanations below will help understand their purpose and how they are structured.
+### Code 1: Basic Optimization with Constraints
+- **Description**: A basic optimization problem where we maximize a set of variables with constraints on both the variables and the inputs.
+- **Input**: Arrays `a` and `b` (parameter values).
+- **Output**: Values of decision variables `x1` and `x2`, along with the optimal value of `x3`.
+- **Key Elements**:
+    - Maximization of decision variables `x1`, `x2`, and `x3`.
+    - Constraints based on the values in `a` and `b`.
 
-### Model 1: Maximization of Flow in a Network
+---
 
-**File: `code 3.opl`**
+### Code 2: Flow Network Optimization
+- **Description**: This model optimizes a flow network, minimizing the flow across a set of edges subject to node constraints.
+- **Input**: List of nodes, edges, and their respective flow capacities (`Debit`).
+- **Output**: The flow on each edge of the network.
+- **Key Elements**:
+    - Maximization of the flow variable `v`.
+    - Flow conservation at each node.
 
-**Description**:  
-This model optimizes the flow in a network, where the goal is to maximize the flow `v` from a source node "S" to a sink node "M". The network is represented by a set of edges with a maximum flow capacity (`Debit`). The model ensures that flow conservation is maintained for each node and that no edge exceeds its capacity.
+---
 
-- **Input**:  
-  - `Nodes`: A set of nodes in the network.
-  - `Edges`: A set of edges between nodes.
-  - `Debit`: Flow capacity for each edge.
-  
-- **Objective**:  
-  Maximize the flow `v` from the source node "S" to the sink node "M".
+### Code 3: Flow Network Optimization (Extended)
+- **Description**: Similar to Code 2, this model also focuses on optimizing a flow network, but with an additional feature of tracking used edges.
+- **Input**: List of nodes, edges, and their respective flow capacities (`Debit`).
+- **Output**: The flow for each edge, along with a list of used edges.
+- **Key Elements**:
+    - Maximization of the flow variable `v`.
+    - Tracking of edges with non-zero flow.
 
-- **Constraints**:  
-  - Flow conservation for each node.
-  - Flow on an edge cannot exceed its capacity.
+---
 
-- **Output**:  
-  - The maximum flow `v`.
-  - The flow on each edge.
+### Code 4: Minimum Cost Flow Problem
+- **Description**: This model minimizes the cost of transporting goods through a network of ports and cities, subject to supply and demand constraints at each node.
+- **Input**: Supply and demand values for ports and cities (`b`) and the transportation costs (`cout`).
+- **Output**: The optimal flow configuration minimizing the total transportation cost.
+- **Key Elements**:
+    - Minimization of transportation costs.
+    - Flow conservation at each node (ports and cities).
+    - Capacity constraints on the arcs.
 
-### Model 2: Transportation Optimization with Cost Minimization
+---
 
-**File: `code 4.opl`**
+### Code 5: Minimum Cable Removal for Disconnection
+- **Description**: This model calculates the minimum number of cables that need to be removed to disconnect a network.
+- **Input**: List of nodes and edges, with flow capacities (`Debit`).
+- **Output**: The minimum number of cables that need to be removed to disconnect the network.
+- **Key Elements**:
+    - Maximization of the flow variable `v`.
+    - Determining the minimum cables to disconnect the network.
 
-**Description**:  
-This model focuses on optimizing the transportation of goods across multiple ports and cities while minimizing the total transportation cost. The problem involves a set of ports (`P1`, `P2`, `P3`) and cities (`V1`, `V2`, `V3`, `V4`). Each port has an offer and each city has a demand. The goal is to transport goods from ports to cities, ensuring that the demand and offer balance while minimizing the transportation cost.
+---
 
-- **Input**:  
-  - `cout`: Transportation costs from ports to cities.
-  - `b`: The supply (offer) at each port and the demand at each city.
-  
-- **Objective**:  
-  Minimize the total transportation cost.
+### Code 6: Minimum Router Removal for Disconnection
+- **Description**: This model calculates the minimum number of routers that need to be removed to disconnect a network.
+- **Input**: List of nodes and edges, with flow capacities (`Debit`).
+- **Output**: The minimum number of routers that need to be removed.
+- **Key Elements**:
+    - Maximization of the flow variable `v`.
+    - Determining the minimum routers to disconnect the network.
 
-- **Constraints**:  
-  - Each port's supply must be balanced with the cities' demand.
-  - The flow on each transportation arc must be within the defined capacity.
+---
 
-- **Output**:  
-  - The optimal transportation flow for each arc.
-  - The minimal total transportation cost.
+### Code 7: PWCIS Optimization Model
+- **Description**: This model solves a set covering problem, determining the optimal subset of nodes such that certain constraints are met.
+- **Input**: List of nodes and edges with their relationships.
+- **Output**: The set of nodes that satisfies the constraints.
+- **Key Elements**:
+    - The model aims to minimize the number of nodes included in the optimal solution.
+    - Constraints include PDS, PMIS, and PWCIS, related to the coverage of the graph.
 
-### Model 3: Minimum Number of Edges to Remove to Disconnect a Network
+---
 
-**File: `code 5.opl`**
+## Prerequisites
 
-**Description**:  
-This model addresses the problem of finding the minimum number of edges that must be removed from a network to disconnect the flow between the source "S" and the sink "M". It is a flow-cut problem, where the objective is to minimize the number of edges to be removed while ensuring that the flow from the source to the sink is severed.
+- **IBM ILOG CPLEX Optimization Studio** is required to run these models.
+- The models are written for **OPL 22.1.x** versions.
 
-- **Input**:  
-  - `Nodes`: A set of nodes in the network.
-  - `Edges`: A set of edges between nodes.
-  - `Debit`: Flow capacity for each edge.
-  
-- **Objective**:  
-  Minimize the number of edges to remove to disconnect the network.
+## Running the Models
 
-- **Constraints**:  
-  - Flow conservation at each node.
-  - Flow on an edge must not exceed its capacity.
-
-- **Output**:  
-  - The minimum number of edges to remove.
-
-### Model 4: Minimum Number of Routers to Remove to Disconnect the Network
-
-**File: `code 6.opl`**
-
-**Description**:  
-This model solves the problem of determining the minimum number of routers (nodes) that need to be removed in order to disconnect the network. The objective is to minimize the number of nodes (routers) to delete while cutting off the flow between the source "S" and the sink "M".
-
-- **Input**:  
-  - `Nodes`: A set of nodes (routers) in the network.
-  - `Edges`: A set of edges between nodes.
-  - `Debit`: Flow capacity for each edge.
-  
-- **Objective**:  
-  Minimize the number of routers (nodes) to remove to disconnect the flow.
-
-- **Constraints**:  
-  - Flow conservation for each node.
-  - Flow on an edge must not exceed its capacity.
-
-- **Output**:  
-  - The minimum number of routers (nodes) to remove.
-
-### Model 5: Minimum Cut in a Flow Network (Edge Removal)
-
-**File: `code 7.opl`**
-
-**Description**:  
-This model addresses the problem of finding the minimum cut in a flow network, where the goal is to identify the smallest set of edges that, when removed, will disconnect the source node from the sink node. This is a classical flow network problem in optimization.
-
-- **Input**:  
-  - `Nodes`: A set of nodes in the network.
-  - `Edges`: A set of edges between nodes.
-  - `Debit`: Flow capacity for each edge.
-  
-- **Objective**:  
-  Minimize the number of edges to remove to disconnect the flow between the source and sink.
-
-- **Constraints**:  
-  - Flow conservation at each node.
-  - Flow on an edge must not exceed its capacity.
-
-- **Output**:  
-  - The minimum number of edges to remove for disconnection.
-
-### Model 6: Set Cover Problem for Minimum Cut
-
-**File: `code 8.opl`**
-
-**Description**:  
-This model deals with the set cover problem in a flow network, aiming to find the minimum number of edges (or nodes) to remove that form the minimum cut. It also includes additional constraints for connectedness in the flow network.
-
-- **Input**:  
-  - `Nodes`: A set of nodes in the network.
-  - `Edges`: A set of edges between nodes.
-  - `Debit`: Flow capacity for each edge.
-  
-- **Objective**:  
-  Minimize the set of edges or nodes that need to be removed.
-
-- **Constraints**:  
-  - Constraints for maintaining flow conservation and connectivity.
-  - Flow capacity constraints for each edge.
-
-- **Output**:  
-  - The minimum cut solution for the network.
-
-## How to Run
-
-To run these models, you will need to have IBM ILOG CPLEX Optimization Studio installed. Follow the steps below to execute any of the models:
-
-1. Install IBM ILOG CPLEX Optimization Studio from [IBM official website](https://www.ibm.com/products/ilog-cplex-optimization-studio).
-2. Open CPLEX Optimization Studio and load the OPL model file (e.g., `code3.opl`).
-3. Run the model, and the results will be displayed in the output console.
-
-### Requirements
-
-- IBM ILOG CPLEX Optimization Studio
-- A compatible version of Java (typically Java 8 or later)
-- Proper configuration of the solver environment
+1. Download and install **IBM ILOG CPLEX Optimization Studio**.
+2. Create a new project and import the OPL models from this repository.
+3. Run the model in the IDE to view the results in the output console.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This repository is available under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+## Authors
+
+- **Houcine Hamnouche**
+- **Ibrahim Makhlouf**
+
